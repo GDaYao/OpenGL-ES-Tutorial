@@ -9,9 +9,14 @@
 
 #import "ViewController.h"
 
+
 // <file/file.h>
 #import <GLKit/GLKit.h>
 #import <CoreImage/CoreImage.h>
+
+#define isMethodTwo YES // NO
+
+
 
 @interface ViewController ()<GLKViewDelegate>
 
@@ -30,7 +35,14 @@
     
     [self createOpenGLContext];
     
-    [self createImageFromOriginImageWithImgName:@"Demo3" withImgType:@"jpg"];
+    if (isMethodTwo == YES) {
+        /* method 2   -- 纹理贴图 */
+        [self createImageWithTextureMapWithImgName:@"Demo3" withImgType:@"jpg"];
+    }else{
+        /* method 1  */
+        [self createImageFromOriginImageWithImgName:@"Demo3" withImgType:@"jpg"];
+    }
+    
     
 }
 
@@ -48,7 +60,7 @@
     
 }
 
-#pragma mark - 读取图片信息并绘制屏幕
+#pragma mark - 1 - 读取图片信息并绘制屏幕
 - (void)createImageFromOriginImageWithImgName:(NSString *)imgName withImgType:(NSString *)imgType{
     // 读取图片生成 TextTure纹理信息
     CVOpenGLESTextureCacheRef coreVideoTextureCache;
@@ -182,6 +194,47 @@
     return image;
 }
 
+#pragma mark - 2 - vertex generate image texture
+- (void)createImageWithTextureMapWithImgName:(NSString *)imgName withImgType:(NSString *)imgType{
+    [self uploadVertexArrayMT];
+    
+    //纹理贴图
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:imgName ofType:imgType];
+    NSDictionary* options = [NSDictionary dictionaryWithObjectsAndKeys:@(1), GLKTextureLoaderOriginBottomLeft, nil];//GLKTextureLoaderOriginBottomLeft 纹理坐标系是相反的
+    GLKTextureInfo* textureInfo = [GLKTextureLoader textureWithContentsOfFile:filePath options:options error:nil];
+    //着色器
+    self.baseEffect = [[GLKBaseEffect alloc] init];
+    self.baseEffect.texture2d0.enabled = GL_TRUE;
+    self.baseEffect.texture2d0.name = textureInfo.name;
+}
+
+- (void)uploadVertexArrayMT{
+    //顶点数据，前三个是顶点坐标（x、y、z轴），后面两个是纹理坐标（x，y）
+    GLfloat vertexData[] =
+    {
+        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
+        0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
+        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
+        
+        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
+        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
+        -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
+    };
+    
+    //顶点数据缓存
+    GLuint buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), vertexData, GL_STATIC_DRAW);
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition); //顶点数据缓存
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (GLfloat *)NULL + 0);
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0); //纹理
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (GLfloat *)NULL + 3);
+}
+
+
+
 /**
  *  场景数据变化
  */
@@ -195,13 +248,18 @@
  */
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     // 改变屏幕背景色
-    //r,g,b -- 76.5,153,255
-    //glClearColor(0.3f, 0.6f, 1.0f, 1.0f);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    //r,g,b -- 240,230,140
+    ///glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(240/255.0, 230/255.0, 140/255.0, 1.0f);
+    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     // from UIImage to screen in image
     [self.baseEffect prepareToDraw];
+    
+    if (isMethodTwo == YES) {
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    }
     
 }
 
