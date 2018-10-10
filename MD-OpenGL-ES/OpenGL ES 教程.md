@@ -597,6 +597,7 @@ CVOpenGLESTextureCacheRef coreVideoTextureCache;
 ```
 
 
+
 #### <table><td bgcolor=	#FFFFF0> <font size=4> 摄像头采集数据和渲染 </font> </td></table>
 
 ### 1. 摄像头采集 --- AVFoundation
@@ -741,9 +742,14 @@ glBindTexture(CVOpenGLESTextureGetTarget(_chromaTexture), CVOpenGLESTextureGetNa
 
 ### 3. OpenGL ES 渲染 --- OpenGL ES
 
-
+#### <table><td bgcolor=	#FFFFF0> <font size=4>  。。。 </font> </td></table>
 
 #### <table><td bgcolor=	#FFFFF0> <font size=4>  。。。 </font> </td></table>
 
 
-#### <table><td bgcolor=	#FFFFF0> <font size=4>  。。。 </font> </td></table>
+
+
+
+
+
+

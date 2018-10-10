@@ -1,0 +1,386 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CADB2FC3216DCFAB00BBC3BF /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CADB2FC2216DCFAB00BBC3BF /* AppDelegate.m */; };
+		CADB2FC6216DCFAB00BBC3BF /* PaintViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CADB2FC5216DCFAB00BBC3BF /* PaintViewController.m */; };
+		CADB2FC9216DCFAB00BBC3BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FC7216DCFAB00BBC3BF /* Main.storyboard */; };
+		CADB2FCB216DCFAD00BBC3BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FCA216DCFAD00BBC3BF /* Assets.xcassets */; };
+		CADB2FCE216DCFAD00BBC3BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FCC216DCFAD00BBC3BF /* LaunchScreen.storyboard */; };
+		CADB2FD1216DCFAD00BBC3BF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CADB2FD0216DCFAD00BBC3BF /* main.m */; };
+		CADB2FD9216DD3B200BBC3BF /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CADB2FD8216DD3B200BBC3BF /* GLKit.framework */; };
+		CADB2FDC216DD3F500BBC3BF /* PaintView.m in Sources */ = {isa = PBXBuildFile; fileRef = CADB2FDB216DD3F500BBC3BF /* PaintView.m */; };
+		CADB2FE3216DD73400BBC3BF /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FDE216DD73400BBC3BF /* red.png */; };
+		CADB2FE4216DD73400BBC3BF /* purple.png in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FDF216DD73400BBC3BF /* purple.png */; };
+		CADB2FE5216DD73400BBC3BF /* yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FE0216DD73400BBC3BF /* yellow.png */; };
+		CADB2FE6216DD73400BBC3BF /* green.png in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FE1216DD73400BBC3BF /* green.png */; };
+		CADB2FE7216DD73400BBC3BF /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = CADB2FE2216DD73400BBC3BF /* blue.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CADB2FBE216DCFAB00BBC3BF /* GLPaint.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLPaint.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CADB2FC1216DCFAB00BBC3BF /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CADB2FC2216DCFAB00BBC3BF /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CADB2FC4216DCFAB00BBC3BF /* PaintViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintViewController.h; sourceTree = "<group>"; };
+		CADB2FC5216DCFAB00BBC3BF /* PaintViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintViewController.m; sourceTree = "<group>"; };
+		CADB2FC8216DCFAB00BBC3BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		CADB2FCA216DCFAD00BBC3BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CADB2FCD216DCFAD00BBC3BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CADB2FCF216DCFAD00BBC3BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CADB2FD0216DCFAD00BBC3BF /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CADB2FD8216DD3B200BBC3BF /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		CADB2FDA216DD3F500BBC3BF /* PaintView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PaintView.h; sourceTree = "<group>"; };
+		CADB2FDB216DD3F500BBC3BF /* PaintView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PaintView.m; sourceTree = "<group>"; };
+		CADB2FDE216DD73400BBC3BF /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
+		CADB2FDF216DD73400BBC3BF /* purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purple.png; sourceTree = "<group>"; };
+		CADB2FE0216DD73400BBC3BF /* yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow.png; sourceTree = "<group>"; };
+		CADB2FE1216DD73400BBC3BF /* green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green.png; sourceTree = "<group>"; };
+		CADB2FE2216DD73400BBC3BF /* blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CADB2FBB216DCFAB00BBC3BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CADB2FD9216DD3B200BBC3BF /* GLKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CADB2FB5216DCFAB00BBC3BF = {
+			isa = PBXGroup;
+			children = (
+				CADB2FC0216DCFAB00BBC3BF /* GLPaint */,
+				CADB2FBF216DCFAB00BBC3BF /* Products */,
+				CADB2FD7216DD3B200BBC3BF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		CADB2FBF216DCFAB00BBC3BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CADB2FBE216DCFAB00BBC3BF /* GLPaint.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CADB2FC0216DCFAB00BBC3BF /* GLPaint */ = {
+			isa = PBXGroup;
+			children = (
+				CADB2FC1216DCFAB00BBC3BF /* AppDelegate.h */,
+				CADB2FC2216DCFAB00BBC3BF /* AppDelegate.m */,
+				CADB2FC4216DCFAB00BBC3BF /* PaintViewController.h */,
+				CADB2FC5216DCFAB00BBC3BF /* PaintViewController.m */,
+				CADB2FDA216DD3F500BBC3BF /* PaintView.h */,
+				CADB2FDB216DD3F500BBC3BF /* PaintView.m */,
+				CADB2FC7216DCFAB00BBC3BF /* Main.storyboard */,
+				CADB2FCA216DCFAD00BBC3BF /* Assets.xcassets */,
+				CADB2FCC216DCFAD00BBC3BF /* LaunchScreen.storyboard */,
+				CADB2FCF216DCFAD00BBC3BF /* Info.plist */,
+				CADB2FD0216DCFAD00BBC3BF /* main.m */,
+				CADB2FDD216DD71800BBC3BF /* UIImage */,
+			);
+			path = GLPaint;
+			sourceTree = "<group>";
+		};
+		CADB2FD7216DD3B200BBC3BF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CADB2FD8216DD3B200BBC3BF /* GLKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CADB2FDD216DD71800BBC3BF /* UIImage */ = {
+			isa = PBXGroup;
+			children = (
+				CADB2FE2216DD73400BBC3BF /* blue.png */,
+				CADB2FE1216DD73400BBC3BF /* green.png */,
+				CADB2FDF216DD73400BBC3BF /* purple.png */,
+				CADB2FDE216DD73400BBC3BF /* red.png */,
+				CADB2FE0216DD73400BBC3BF /* yellow.png */,
+			);
+			path = UIImage;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CADB2FBD216DCFAB00BBC3BF /* GLPaint */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CADB2FD4216DCFAD00BBC3BF /* Build configuration list for PBXNativeTarget "GLPaint" */;
+			buildPhases = (
+				CADB2FBA216DCFAB00BBC3BF /* Sources */,
+				CADB2FBB216DCFAB00BBC3BF /* Frameworks */,
+				CADB2FBC216DCFAB00BBC3BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GLPaint;
+			productName = GLPaint;
+			productReference = CADB2FBE216DCFAB00BBC3BF /* GLPaint.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CADB2FB6216DCFAB00BBC3BF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = Dayao;
+				TargetAttributes = {
+					CADB2FBD216DCFAB00BBC3BF = {
+						CreatedOnToolsVersion = 10.0;
+					};
+				};
+			};
+			buildConfigurationList = CADB2FB9216DCFAB00BBC3BF /* Build configuration list for PBXProject "GLPaint" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CADB2FB5216DCFAB00BBC3BF;
+			productRefGroup = CADB2FBF216DCFAB00BBC3BF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CADB2FBD216DCFAB00BBC3BF /* GLPaint */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CADB2FBC216DCFAB00BBC3BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CADB2FE6216DD73400BBC3BF /* green.png in Resources */,
+				CADB2FCE216DCFAD00BBC3BF /* LaunchScreen.storyboard in Resources */,
+				CADB2FE5216DD73400BBC3BF /* yellow.png in Resources */,
+				CADB2FE7216DD73400BBC3BF /* blue.png in Resources */,
+				CADB2FE3216DD73400BBC3BF /* red.png in Resources */,
+				CADB2FE4216DD73400BBC3BF /* purple.png in Resources */,
+				CADB2FCB216DCFAD00BBC3BF /* Assets.xcassets in Resources */,
+				CADB2FC9216DCFAB00BBC3BF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CADB2FBA216DCFAB00BBC3BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CADB2FC6216DCFAB00BBC3BF /* PaintViewController.m in Sources */,
+				CADB2FDC216DD3F500BBC3BF /* PaintView.m in Sources */,
+				CADB2FD1216DCFAD00BBC3BF /* main.m in Sources */,
+				CADB2FC3216DCFAB00BBC3BF /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CADB2FC7216DCFAB00BBC3BF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CADB2FC8216DCFAB00BBC3BF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		CADB2FCC216DCFAD00BBC3BF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CADB2FCD216DCFAD00BBC3BF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CADB2FD2216DCFAD00BBC3BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		CADB2FD3216DCFAD00BBC3BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CADB2FD5216DCFAD00BBC3BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GLPaint/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dayao.GLPaint;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CADB2FD6216DCFAD00BBC3BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GLPaint/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = Dayao.GLPaint;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CADB2FB9216DCFAB00BBC3BF /* Build configuration list for PBXProject "GLPaint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CADB2FD2216DCFAD00BBC3BF /* Debug */,
+				CADB2FD3216DCFAD00BBC3BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CADB2FD4216DCFAD00BBC3BF /* Build configuration list for PBXNativeTarget "GLPaint" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CADB2FD5216DCFAD00BBC3BF /* Debug */,
+				CADB2FD6216DCFAD00BBC3BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CADB2FB6216DCFAB00BBC3BF /* Project object */;
+}
