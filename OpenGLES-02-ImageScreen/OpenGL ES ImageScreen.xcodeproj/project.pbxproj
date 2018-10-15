@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA5A396521743A8500DB9EA7 /* flower.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CA5A396421743A8500DB9EA7 /* flower.jpg */; };
 		CAA7D314215F7C8200BF29EA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CAA7D313215F7C8200BF29EA /* AppDelegate.m */; };
 		CAA7D317215F7C8200BF29EA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CAA7D316215F7C8200BF29EA /* ViewController.m */; };
 		CAA7D31A215F7C8200BF29EA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CAA7D318215F7C8200BF29EA /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA5A396421743A8500DB9EA7 /* flower.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = flower.jpg; sourceTree = "<group>"; };
 		CAA7D30F215F7C8200BF29EA /* OpenGL ES ImageScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenGL ES ImageScreen.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAA7D312215F7C8200BF29EA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CAA7D313215F7C8200BF29EA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 				CAA7D32A215F7D5A00BF29EA /* Demo1.png */,
 				CAA7D328215F7D5A00BF29EA /* Demo2.png */,
 				CAA7D329215F7D5A00BF29EA /* Demo3.jpg */,
+				CA5A396421743A8500DB9EA7 /* flower.jpg */,
 				CAA7D32E215F7D6600BF29EA /* GraphicVertex.glsl */,
 				CAA7D32F215F7D6600BF29EA /* GraphicFragment.glsl */,
 				CAA7D312215F7C8200BF29EA /* AppDelegate.h */,
@@ -149,6 +152,7 @@
 				CAA7D32D215F7D5B00BF29EA /* Demo1.png in Resources */,
 				CAA7D32C215F7D5B00BF29EA /* Demo3.jpg in Resources */,
 				CAA7D31A215F7C8200BF29EA /* Main.storyboard in Resources */,
+				CA5A396521743A8500DB9EA7 /* flower.jpg in Resources */,
 				CAA7D331215F7D6700BF29EA /* GraphicFragment.glsl in Resources */,
 				CAA7D32B215F7D5B00BF29EA /* Demo2.png in Resources */,
 			);

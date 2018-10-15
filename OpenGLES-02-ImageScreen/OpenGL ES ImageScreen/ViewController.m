@@ -14,9 +14,7 @@
 #import <GLKit/GLKit.h>
 #import <CoreImage/CoreImage.h>
 
-#define isMethodTwo YES // NO
-
-
+#define isMethodTwo NO // NO
 
 @interface ViewController ()<GLKViewDelegate>
 
@@ -37,10 +35,10 @@
     
     if (isMethodTwo == YES) {
         /* method 2   -- 纹理贴图 */
-        [self createImageWithTextureMapWithImgName:@"Demo3" withImgType:@"jpg"];
+        [self createImageWithTextureMapWithImgName:@"flower" withImgType:@"jpg"];
     }else{
         /* method 1  */
-        [self createImageFromOriginImageWithImgName:@"Demo3" withImgType:@"jpg"];
+        [self createImageFromOriginImageWithImgName:@"flower" withImgType:@"jpg"];
     }
     
     
@@ -48,9 +46,18 @@
 
 #pragma mark - 创建 OpenGL ES 上下文
 - (void)createOpenGLContext{
-    /* context */
+/* context */
     self.mainContext = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    [EAGLContext setCurrentContext:self.mainContext]; //设置当前屏幕view显示上下文为初始化的 self.mainContext
+    //设置当前屏幕view显示上下文为初始化的 self.mainContext
+    if (!self.mainContext) {
+        NSLog(@"Failed to initialize OpenGLES 2.0 context");
+        exit(1);
+    }
+    // 设置为当前上下文
+    if (![EAGLContext setCurrentContext:self.mainContext]) {
+        NSLog(@"Failed to set current OpenGL context");
+        exit(1);
+    }
     
     GLKView *glkV = [[GLKView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [self.view addSubview:glkV];

@@ -15,13 +15,26 @@
 
 @interface ViewController () <GLKViewDelegate>
 
-@property (nonatomic,strong)EAGLContext *mainContext;
+@property (nonatomic,strong) EAGLContext *mainContext;
 
-@property (nonatomic , assign)int indicesCount;
+@property (nonatomic , assign) int indicesCount;
 
 @property (nonatomic , strong) GLKBaseEffect* baseEffect;
 
+/* Method Two */
+@property (nonatomic,strong) CAEAGLLayer *eaglLayer;
+
+@property (nonatomic,assign) GLuint colorRenderBuffer;
+@property (nonatomic,assign) GLuint frameBuffer;
+
+/* 绘制 `点` */
+@property (nonatomic,assign)GLuint programHandle;
+
+
+
 @end
+
+#define UseMethodOne YES // NO
 
 @implementation ViewController
 {
@@ -35,14 +48,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self createOpenGLContext];
     
+    if (UseMethodOne == YES) {
+        [self createOpenGLContext];
+        
+    }
     
-    [self createGraphics];
     
     // 配置顶点着色器和片段着色器进行颜色设置
     // 此方法只是进行颜色的着色，如果不调用也并不会影响我们的程序和图形的正确创建和生成。
     [self compileShadersCreatProgram];
+    
+    // 绘制`矩形`
+    [self createGraphics];
+    
+    // 绘制`点`
+    //[self createDrawPoints];
+    
     
 }
 
@@ -50,13 +72,22 @@
 #pragma mark - 创建 OpenGL ES 上下文
 - (void)createOpenGLContext{
     /* context */
-    self.mainContext = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    [EAGLContext setCurrentContext:self.mainContext]; //设置当前屏幕view显示上下文为初始化的 self.mainContext
+    _mainContext = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    //设置当前屏幕view显示上下文为初始化的 self.mainContext
+    if (!_mainContext) {
+        NSLog(@"Failed to initialize OpenGLES 2.0 context");
+        exit(1);
+    }
+    // 设置为当前上下文
+    if (![EAGLContext setCurrentContext:_mainContext]) {
+        NSLog(@"Failed to set current OpenGL context");
+        exit(1);
+    }
     
     GLKView *glkV = [[GLKView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [self.view addSubview:glkV];
     glkV.delegate = self; // you must set delegate, to clear screen color and setDrawElement.
-    glkV.context = self.mainContext;
+    glkV.context = _mainContext;
     glkV.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;  // 颜色缓冲区格式
     
 }
@@ -76,10 +107,16 @@
     //顶点数组数据，前三个是顶点坐标（x、y、z轴），后面两个是纹理坐标（x，y）
     // VB)
     GLfloat squareVertexData[] = {
-        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
-        -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
-        0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
-        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
+//        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
+//        -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
+//        0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
+//        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
+        
+        -1.0, 1.0, 0.0f, 0.0f,0.5/2.0f,   //左上
+        -1.0, -1.0, 0.0f,  0.0f,0.0f, //左下
+        1.0, 1.0, -0.0f,  0.5/2.f,0.5/2.f,  //右上
+        1.0, -1.0, 0.0f,   0.5/2.f,0.0f, //右下
+
     };
     
     // 索引缓冲对象 -- EBO
@@ -135,6 +172,29 @@
      */
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0); // GL_UNSIGNED_BYTE
     
+    
+}
+
+
+- (void)createDrawPoints{
+    static GLfloat points[] = { // 前三位表示位置x, y, z 后三位表示颜色值r, g, b
+        0.0f, 0.5f, 0,  0, 0, 0, // 位置为( 0.0, 0.5, 0.0); 颜色为(0, 0, 0)黑色
+        -0.5f, 0.0f, 0,     1, 0, 0, // 位置为(-0.5, 0.0, 0.0); 颜色为(1, 0, 0)红色
+        0.5f, 0.0f, 0,  1, 0, 0  // 位置为( 0.5, 0.0, 0.0); 颜色为(1, 0, 0)红色
+    }; // 共有三组数据，表示三个点
+    
+    GLuint attrib_position = glGetAttribLocation(_programHandle, "vertexShaderPosition");
+    glEnableVertexAttribArray(attrib_position);
+    GLuint attrib_color    = glGetAttribLocation(_programHandle, "fragColor");
+    glEnableVertexAttribArray(attrib_color);
+    
+    // 对于position每个数值包含3个分量，即3个byte，两组数据间间隔6个GLfloat
+    // 同样,对于color每个数值含3个分量，但数据开始的指针位置为跳过3个position的GLFloat大小
+    glVertexAttribPointer(attrib_position, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (char *)points);
+   glVertexAttribPointer(attrib_color, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (char *)points + 3 * sizeof(GLfloat));
+    
+    glDrawArrays(GL_POINTS, 0, 3);
+    
 }
 
 
@@ -142,17 +202,16 @@
 - (void)compileShadersCreatProgram{
     // generate vertex shader
     GLuint vertexShader = [self compileShaderWithName:@"GraphicVertex" shaderType:GL_VERTEX_SHADER];
-    //GLuint vertexShader = [self compileShaderWithName:@"SimpleVertex" shaderType:GL_VERTEX_SHADER];
     
     // generate fragment shader
     GLuint fragmentShader = [self compileShaderWithName:@"GraphicFragment" shaderType:GL_FRAGMENT_SHADER];
-    //GLuint fragmentShader = [self compileShaderWithName:@"SimpleFragment" shaderType:GL_FRAGMENT_SHADER];
+
     
     // ....
-    GLuint programHandle = glCreateProgram(); //
-    glAttachShader(programHandle, vertexShader); // link vertex shader
-    glAttachShader(programHandle, fragmentShader); // link fragment shader
-    glLinkProgram(programHandle); // link program
+    _programHandle = glCreateProgram(); //
+    glAttachShader(_programHandle, vertexShader); // link vertex shader
+    glAttachShader(_programHandle, fragmentShader); // link fragment shader
+    glLinkProgram(_programHandle); // link program
     
     // after shader object link program,delete shader object
     //glDeleteShader(vertexShader);
@@ -160,7 +219,7 @@
     
     // use `glGetProgramiv` to test error or not
     GLint linkSuccess;
-    glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
+    glGetProgramiv(_programHandle, GL_LINK_STATUS, &linkSuccess);
     if (linkSuccess == GL_FALSE) {
         GLchar messages[256];
         NSString *messageString = [NSString stringWithUTF8String:messages];
@@ -169,11 +228,14 @@
     }
     
     // use `glUseProgram` bind program object,let `OpenGL ES` execute program to rendering.
-    glUseProgram(programHandle);
+    glUseProgram(_programHandle);
     
     // 把“顶点属性索引”绑定到“顶点属性名” --> program object -->GraphicVertex.glsl/vertexShaderPosition
-    glGetAttribLocation(programHandle, "vertexShaderPosition");
+    glGetAttribLocation(_programHandle, "vertexShaderPosition");
+    glGetAttribLocation(_programHandle, "fragColor");
+    
 }
+
 
 //  package create `shader` object
 - (GLuint)compileShaderWithName:(NSString *)shaderName shaderType:(GLenum)shaderType{
@@ -185,6 +247,7 @@
     
     
     if((shaderStr.length == 0) || !shaderStr){
+        NSLog(@"着色器出错：%@",error.localizedDescription);
         exit(1);
     }
     
@@ -210,6 +273,7 @@
         exit(1);
     }
     return shader;
+    
 }
 
 /**
@@ -218,85 +282,81 @@
 - (void)update {
     
 }
-
 /**
  *  渲染场景代码 -- GLKView independence use -- GLKView delegate
  *  like drawRect:方法相同，用来绘制view的内容的,意思是对delegate的view的进行的重绘
  */
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
     // 改变屏幕背景色
-    //r,g,b -- 76.5,153,255
-    //glClearColor(0.3f, 0.6f, 1.0f, 1.0f);
+    //r,g,b -- 76.5, 153, 255
+    // glClearColor(0.3f, 0.6f, 1.0f, 1.0f);
     
     glClearColor(1.0f,1.0f,1.0f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     //启动着色器
     glDrawElements(GL_TRIANGLES, self.indicesCount, GL_UNSIGNED_INT, 0);
-    
-    // from UIImage to screen in image
-    // [self.baseEffect prepareToDraw];
-    
 }
 
 
+#pragma mark - method 2
+- (void)useMethodTwo{
+    // setupCAEAGLLayer
+    self.eaglLayer = [CAEAGLLayer layer];
+    self.eaglLayer.frame = self.view.frame;
+    self.eaglLayer.opaque = YES; // 默认透明
+    
+    self.eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO],kEAGLDrawablePropertyRetainedBacking,kEAGLColorFormatRGBA8,kEAGLDrawablePropertyColorFormat, nil];
+    [self.view.layer addSublayer:self.eaglLayer];
+    
+    [self destoryBuffer];
+    
+    [self setupRenderAndFrameBuffer];
+    
+    // 设置清屏颜色
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    // 用来指定要用清屏颜色来清除由mask指定的buffer，此处是color buffer
+    glClear(GL_COLOR_BUFFER_BIT);
+    
+    glViewport(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    
+    
+    // in all operate end.
+     [self.mainContext presentRenderbuffer:GL_RENDERBUFFER];
+    
+}
 
-/* other way
- - (void)otherOperate{
- // setupCAEAGLLayer
- self.eaglLayer = [CAEAGLLayer layer];
- self.eaglLayer.frame = self.view.frame;
- self.eaglLayer.opaque = YES; // 默认透明
- 
- self.eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:NO],kEAGLDrawablePropertyRetainedBacking,kEAGLColorFormatRGBA8,kEAGLDrawablePropertyColorFormat, nil];
- [self.view.layer addSublayer:self.eaglLayer];
- 
- [self destoryBuffer];
- 
- [self setupRenderAndFrameBuffer];
- 
- // 设置清屏颜色
- glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
- // 用来指定要用清屏颜色来清除由mask指定的buffer，此处是color buffer
- glClear(GL_COLOR_BUFFER_BIT);
- 
- glViewport(0, 0, self.view.frame.size.width, self.view.frame.size.height);
- 
- 
- // in all operate end.
- // [self.mainContext presentRenderbuffer:GL_RENDERBUFFER];
- 
- }
- - (void)destoryBuffer{
- // 销毁渲染区和帧缓冲区
- if (_colorRenderBuffer) {
- glDeleteRenderbuffers(1, &_colorRenderBuffer);
- _colorRenderBuffer = 0;
- }
- 
- if (_frameBuffer) {
- glDeleteFramebuffers(1, &_frameBuffer);
- _frameBuffer = 0;
- }
- }
- - (void)setupRenderAndFrameBuffer{
- 
- //先要renderbuffer，然后framebuffer，顺序不能互换。
- 
- glGenRenderbuffers(1, &_colorRenderBuffer);
- // 设置为当前renderBuffer
- glBindRenderbuffer(GL_RENDERBUFFER, _colorRenderBuffer);
- //为color renderbuffer 分配存储空间
- [self.mainContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:self.eaglLayer];
- 
- // FBO用于管理colorRenderBuffer，离屏渲染
- glGenFramebuffers(1, &_frameBuffer);
- //设置为当前framebuffer
- glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
- // 将 _colorRenderBuffer 装配到 GL_COLOR_ATTACHMENT0 这个装配点上
- glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorRenderBuffer);
- }
- */
+- (void)destoryBuffer{
+    // 销毁渲染区和帧缓冲区
+    if (_colorRenderBuffer) {
+        glDeleteRenderbuffers(1, &_colorRenderBuffer);
+        _colorRenderBuffer = 0;
+    }
+    
+    if (_frameBuffer) {
+        glDeleteFramebuffers(1, &_frameBuffer);
+        _frameBuffer = 0;
+    }
+}
+
+- (void)setupRenderAndFrameBuffer{
+    
+    //先要renderbuffer，然后framebuffer，顺序不能互换。
+    
+    glGenRenderbuffers(1, &_colorRenderBuffer);
+    // 设置为当前renderBuffer
+    glBindRenderbuffer(GL_RENDERBUFFER, _colorRenderBuffer);
+    //为color renderbuffer 分配存储空间
+    [self.mainContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:self.eaglLayer];
+    
+    // FBO用于管理colorRenderBuffer，离屏渲染
+    glGenFramebuffers(1, &_frameBuffer);
+    //设置为当前framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, _frameBuffer);
+    // 将 _colorRenderBuffer 装配到 GL_COLOR_ATTACHMENT0 这个装配点上
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorRenderBuffer);
+}
+
 
 
 

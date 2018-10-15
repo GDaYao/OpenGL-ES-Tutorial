@@ -3,7 +3,7 @@
 
 OpenGL ES 只是一个规范函数，需要使用专门的编程语言实现其所需要的图像绘制功能。
 
-OpenGL自身是一个巨大的状态机(State Machine)：一系列的变量描述OpenGL此刻应当如何运行。`OpenGL 的状态通常被称为 OpenGL 上下文(Context)`,通常是通过 `设置选项` `操作缓冲` 改变OpenGL 的状态最后使用当前OpenGL上下文实现渲染。
+OpenGL自身是一个巨大的状态机(State Machine)：一系列的变量描述OpenGL此刻应当如何运行。 `OpenGL 的状态通常被称为 OpenGL 上下文(Context)`,通常是通过 `设置选项` `操作缓冲` 改变OpenGL 的状态最后使用当前OpenGL上下文实现渲染。
 
 通过上述就可以知道了，我们实现OpenGL 去绘制时就是不断的改变OpenGL的状态实现的。
 
@@ -50,7 +50,7 @@ glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_HEIGHT, 600);
 // 将上下文对象设回默认
 glBindObject(GL_WINDOW_TARGET, 0);
 
-这一小段代码展现了你以后使用OpenGL时常见的工作流。
+这一小段代码展现了以后使用 OpenGL 时常见的工作流。
 	我们首先创建一个对象，然后用一个id保存它的引用（实际数据被储存在后台）。
 	然后我们将对象绑定至上下文的目标位置（例子中窗口对象目标的位置被定义成GL_WINDOW_TARGET）。
 	接下来我们设置窗口的选项。
@@ -82,7 +82,7 @@ https://developer.apple.com/documentation/opengles?language=objc
 ##### `OpenGL ES` 是实际上就是一个API函数，包含一系列可以操作图形和图像的函数。 `OpenGL` 规范严格规定了每个函数该如何执行，以及它们的输出值.
 
 
-#### <table><td bgcolor=	#FFFFF0> <font size=3>   OpenGL ES 入门 基本使用操作 </font> </td></table>
+#### <table><td bgcolor=	#FFFFF0> <font size=3>   OpenGL ES 入门 基本使用操作 -- 点/线绘制 </font> </td></table>
 
 导入头文件 
 
@@ -113,113 +113,29 @@ https://developer.apple.com/documentation/opengles?language=objc
 
 // 创建 OpenGL ES 上下文
 - (void)createOpenGLContext{
-    self.mainContext = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2]; //2.0，还有1.0和3.0
+	 _mainContext = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2]; //2.0，还有1.0和3.0
+    if (!_mainContext) {
+        NSLog(@"Failed to initialize OpenGLES 2.0 context");
+        exit(1);
+    }
+
+    // 设置为当前上下文
+    if (![EAGLContext setCurrentContext:_mainContext]) {
+        NSLog(@"Failed to set current OpenGL context");
+        exit(1);
+    }
+
 // first use `GLKView`,please import `#import <GLKit/GLKView.h>`    
     GLKView *glkV = [[GLKView alloc]init];
     glkV.context = self.mainContext;
     glkV.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888; // 颜色缓冲区格式
-    [EAGLContext setCurrentContext:self.mainContext]; //设置当前屏幕view显示上下文为初始化的 self.mainContext
 }
 
 @end
 
 ```
 
-#### > 2-1. 顶点数组和索引数组 -- OpenGL ES 坐标系和纹理坐标系
-
-由于 OpenGL 主要绘制三角形，所有图形，皆由其设定顶点数据和顺序后组成。
-
-```
-/*  图形绘制
- *  三角形，矩形(OpenGL 主要绘制三角形)
- */
- 
-// OpenGL ES 的坐标系原点在 (0,0) 在屏幕中间。
-//顶点数组数据，前三个是顶点坐标（x、y、z轴），后面两个是纹理坐标（x，y）
-	// 索引缓冲对象
-    GLfloat squareVertexData[] = {
-        0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
-        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
-        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
-        -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
-        /*  顶点数据的顺序不同生成的图形不同
-        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
-        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
-        -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
-        0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
-        */    
-    };
-// 数组中只存储不同的顶点，并设定绘制这些顶点的顺序。
-    
-```
-
-```
-//顶点索引 --- // 注意索引从0开始! 
-    GLuint indices[] =
-    {
-        0,1,2, // 第一个三角形
-        1,3,0 //第二个三角形
-    };
-    self.indicesCount = sizeof(indices) / sizeof(GLuint);
-```
-`顶点数组` 里包括顶点坐标，OpenGL ES 的坐标系原点在 (0,0) 在屏幕中间。
-
-`纹理坐标系` 的取值范围是[0, 1]，原点(0, 0)在左下角，点(1, 1)在右上角。  
-
-`索引数组` 是顶点数组的索引，把 vertexData 数组看成4个顶点，每个顶点会有5个GLfloat数据，索引从0开始。
-
-
-
-### > 2-2. 顶点数据缓存 --- 绘制
-
-```
-//顶点数据缓存
-    GLuint buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVertexData), squareVertexData, GL_STATIC_DRAW);
-
-    GLuint index;
-    glGenBuffers(1, &index);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    //
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (GLfloat *)NULL + 0);
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0); // 纹理
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (GLfloat *)NULL + 3);
-    
-// 注意： 释义
-glGenBuffers	申请一个标识符
-glBindBuffer	把标识符绑定到GL_ARRAY_BUFFER上
-glBufferData	用户定义的数据复制到当前绑定缓冲的函数
-	它的第一个参数是目标缓冲的类型：顶点缓冲对象当前绑定到GL_ARRAY_BUFFER目标上。
-	第二个参数指定传输数据的大小(以字节为单位)；用一个简单的sizeof计算出顶点数据大小就行。
-	第三个参数是我们希望发送的实际数据。
-	第四个参数指定了我们希望显卡如何管理给定的数据。它有三种形式：
-		GL_STATIC_DRAW ：数据不会或几乎不会改变。
-		GL_DYNAMIC_DRAW：数据会被改变很多。
-		GL_STREAM_DRAW ：数据每次绘制时都会改变。
-
-glEnableVertexAttribArray 	开启对应的顶点属性
-glVertexAttribPointer	设置合适的格式从buffer里面读取数据,即告诉OpenGL该如何解析数据
-/*
-glVertexAttribPointer函数的参数非常多，下面逐一说明:
-第一个参数GLuint indx:指定要配置的顶点属性，设置数据传递到指定位置顶点属性中
-第二个参数GLint size：指定顶点属性的大小
-第三个参数GLenum type：指定数据的类型，这里是GL_FLOAT(GLSL中vec*都是由浮点数值组成的)
-第四个参数GLboolean normalized：定义数据是否被标准化(Normalize)。如果设置为GL_TRUE，所有数据都会被映射到0（对于有符号型signed数据是-1）到1之间。因为我们传入的数据就是标准化数据，所以我们把它设置为GL_FALSE
-第五个参数GLsizei stride：设置连续的顶点属性组之间的间隔。由于下个组位置数据在3个float之后，
-        我们把步长设置为3 * sizeof(float)。要注意的是由于我们知道这个数组是紧密排列的（在两个顶点属性之间没有空隙）我们也可以设置为0来让OpenGL决定具体步长是多少（只有当数值是紧密排列时才可用）。
-        一旦我们有更多的顶点属性，我们就必须更小心地定义每个顶点属性之间的间隔，我们在后面会看到更多的例子
-      （这个参数的意思简单说就是从这个属性第二次出现的地方到整个数组0位置之间有多少字节）
-最后一个参数const GLvoid *ptr：类型是void*，所以需要我们进行这个奇怪的强制类型转换。它表示位置数据在缓冲中起始位置的偏移量(Offset)。由于位置数据在数组的开头，所以这里是0。
-*/
-```
-
-
-
-### > 2-3 着色器着色
+### > 2-1 着色器着色 -- 先着色器配置，在绘制相应图形
 
 在上述所有的步骤, `顶点数组` 和 `索引数组` 创建和配置完毕后，即可生成一个矩形。
 
@@ -245,6 +161,7 @@ int main()
   // 输出处理过的结果到输出变量
   out_variable_name = weird_stuff_we_processed;
 }
+
 /*
 着色器的开头总是要声明版本
 输入输出变量
@@ -285,19 +202,19 @@ void main(void) {
 }
 ```
 
-创建 program 对象:
+创建 program 对象: -- 这是在编译shader对象后，接下来需要把它链接到 `OpenGL` 的 `glProgram` 上，让它可以在GPU上run起来。
 
 ```
 #pragma mark - create `program` object
 - (void)compileShadersCreatProgram{
-    // generate vertex shader
+// 1. 生成 shader 对象
+    // **  generate vertex shader  **
     GLuint vertexShader = [self compileShaderWithName:@"GraphicVertex" shaderType:GL_VERTEX_SHADER];
-    //GLuint vertexShader = [self compileShaderWithName:@"SimpleVertex" shaderType:GL_VERTEX_SHADER];
-    
+
     // generate fragment shader
     GLuint fragmentShader = [self compileShaderWithName:@"GraphicFragment" shaderType:GL_FRAGMENT_SHADER];
-    //GLuint fragmentShader = [self compileShaderWithName:@"SimpleFragment" shaderType:GL_FRAGMENT_SHADER];
     
+// 2. 把 shader 链接到 OpenGL 的 glProgram上。
     // ....
     GLuint programHandle = glCreateProgram(); //
     glAttachShader(programHandle, vertexShader); // link vertex shader
@@ -311,6 +228,7 @@ void main(void) {
     // use `glGetProgramiv` to test error or not
     GLint linkSuccess;
     glGetProgramiv(programHandle, GL_LINK_STATUS, &linkSuccess);
+    
     if (linkSuccess == GL_FALSE) {
         GLchar messages[256];
         NSString *messageString = [NSString stringWithUTF8String:messages];
@@ -322,11 +240,20 @@ void main(void) {
     glUseProgram(programHandle);
     
     // 把“顶点属性索引”绑定到“顶点属性名” --> program object -->GraphicVertex.glsl/vertexShaderPosition
-    glGetAttribLocation(programHandle, "vertexShaderPosition");
+    glGetAttribLocation(programHandle, "vertexShaderPosition"); 
 }
+
+/**
+完成上面的步骤后，我们就可以用programe来和shader交互了，比如赋值给顶点shader的position变量
+（即创建顶点数组进行绘制）
+
+GLuint attrib_position = glGetAttribLocation(program, "position");
+glEnableVertexAttribArray(attrib_position);
+glVertexAttribPointer(attrib_position, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (char *)points);
+*/
 ```
 
-生成 `Shader` 着色器:
+生成 `Shader` 着色器: -- 运行时动态编译源码以得到一个着色器对象。而且编译shader的流程是固定的。
 
 ```
 //  package create `shader` object
@@ -369,6 +296,102 @@ void main(void) {
 ```
 
 
+
+#### > 2-2. 顶点数组和索引数组 -- OpenGL ES 坐标系和纹理坐标系
+
+<font color=#8E236B>由于 OpenGL 主要绘制三角形，所有图形，皆由其设定顶点数据和顺序后组成。</font>
+
+```
+/*  图形绘制
+ *  三角形，矩形(OpenGL 主要绘制三角形)
+ */
+ 
+// OpenGL ES 的坐标系原点在 (0,0) 在屏幕中间。
+//顶点数组数据，前三个是顶点坐标（x、y、z轴），后面两个是纹理坐标（x，y）
+	// 索引缓冲对象
+    GLfloat squareVertexData[] = {
+        0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
+        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
+        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
+        -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
+        /*  顶点数据的顺序不同生成的图形不同
+        0.5, -0.5, 0.0f,    1.0f, 0.0f, //右下
+        -0.5, 0.5, 0.0f,    0.0f, 1.0f, //左上
+        -0.5, -0.5, 0.0f,   0.0f, 0.0f, //左下
+        0.5, 0.5, -0.0f,    1.0f, 1.0f, //右上
+        */    
+    };
+// 数组中只存储不同的顶点，并设定绘制这些顶点的顺序。
+    
+```
+
+```
+//顶点索引 --- // 注意索引从0开始! 
+    GLuint indices[] =
+    {
+        0,1,2, // 第一个三角形
+        1,3,0 //第二个三角形
+    };
+    self.indicesCount = sizeof(indices) / sizeof(GLuint);
+```
+ `顶点数组` 里包括顶点坐标，OpenGL ES 的 <font color=red> 坐标系原点在 (0,0) 在屏幕中间。</font>
+
+ `纹理坐标系` 的取值范围是[0, 1]，<font color=red>原点(0, 0)在左下角，点(1, 1)在右上角。  </font>
+
+`索引数组` 是顶点数组的索引，把 vertexData 数组看成4个顶点，每个顶点会有5个GLfloat数据，索引从0开始。
+
+
+
+### > 2-3. 顶点数据缓存 --- 绘制
+
+```
+//顶点数据缓存
+    GLuint buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(squareVertexData), squareVertexData, GL_STATIC_DRAW);
+
+    GLuint index;
+    glGenBuffers(1, &index);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (GLfloat *)NULL + 0);
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0); // 纹理
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat) * 5, (GLfloat *)NULL + 3);
+    
+// 注意： 释义
+glGenBuffers	申请一个标识符
+glBindBuffer	把标识符绑定到GL_ARRAY_BUFFER上
+glBufferData	用户定义的数据复制到当前绑定缓冲的函数
+	它的第一个参数是目标缓冲的类型：顶点缓冲对象当前绑定到GL_ARRAY_BUFFER目标上。
+	第二个参数指定传输数据的大小(以字节为单位)；用一个简单的sizeof计算出顶点数据大小就行。
+	第三个参数是我们希望发送的实际数据。
+	第四个参数指定了我们希望显卡如何管理给定的数据。它有三种形式：
+		GL_STATIC_DRAW ：数据不会或几乎不会改变。
+		GL_DYNAMIC_DRAW：数据会被改变很多。
+		GL_STREAM_DRAW ：数据每次绘制时都会改变。
+
+glEnableVertexAttribArray 	开启对应的顶点属性
+glVertexAttribPointer	设置合适的格式从buffer里面读取数据,即告诉OpenGL该如何解析数据
+
+/*
+glVertexAttribPointer函数的参数非常多，下面逐一说明:
+第一个参数GLuint indx:指定要配置的顶点属性，设置数据传递到指定位置顶点属性中
+第二个参数GLint size：指定顶点属性的大小
+第三个参数GLenum type：指定数据的类型，这里是GL_FLOAT(GLSL中vec*都是由浮点数值组成的)
+第四个参数GLboolean normalized：定义数据是否被标准化(Normalize)。如果设置为GL_TRUE，所有数据都会被映射到0（对于有符号型signed数据是-1）到1之间。因为我们传入的数据就是标准化数据，所以我们把它设置为GL_FALSE
+第五个参数GLsizei stride：设置连续的顶点属性组之间的间隔。由于下个组位置数据在3个float之后，
+        我们把步长设置为3 * sizeof(float)。要注意的是由于我们知道这个数组是紧密排列的（在两个顶点属性之间没有空隙）我们也可以设置为0来让OpenGL决定具体步长是多少（只有当数值是紧密排列时才可用）。
+        一旦我们有更多的顶点属性，我们就必须更小心地定义每个顶点属性之间的间隔，我们在后面会看到更多的例子
+      （这个参数的意思简单说就是从这个属性第二次出现的地方到整个数组0位置之间有多少字节）
+最后一个参数const GLvoid *ptr：类型是void*，所以需要我们进行这个奇怪的强制类型转换。它表示位置数据在缓冲中起始位置的偏移量(Offset)。由于位置数据在数组的开头，所以这里是0。
+*/
+```
+
+
+
 ### > 2-4 规范绘制的步骤
 
 ```
@@ -402,7 +425,26 @@ glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
 glBindVertexArray(0);
 ```
 
-### <table><td bgcolor=#FFFFF0><font size=4> 读取图片信息并绘制屏幕  </font></td></table>
+所有几何图元的绘制都是通过调用 `glDrawArrays` 实现的：
+
+```
+	glDrawArrays (GLenum mode, GLint first, GLsizei count);
+```
+
+这里的mode为几何形状类型，主要有点，线和三角形三种：
+
+```
+#define GL_POINTS           0x0000  // 点     -> 默认为方形
+#define GL_LINES            0x0001  // 线段   -> 可不连续
+#define GL_LINE_LOOP        0x0002  // 线圈   -> 首尾相连的线段
+#define GL_LINE_STRIP       0x0003  // 线段带 -> 相邻线段共享顶点
+#define GL_TRIANGLES        0x0004  // 三角形 -> 三个顶点连接
+#define GL_TRIANGLE_STRIP   0x0005  // 三角带 -> 相邻三角共享边
+#define GL_TRIANGLE_FAN     0x0006  // 三角扇 -> 所有三角共享顶点
+```
+
+
+### <table><td bgcolor=#FFFFF0><font size=4> 读取图片信息并绘制屏幕 -- 纹理使用  </font></td></table>
 
 #### > 1. 读取图片生成 TextTure纹理信息
 
@@ -412,7 +454,7 @@ glBindVertexArray(0);
  */
 
 
-CVOpenGLESTextureCacheRef coreVideoTextureCache;
+	CVOpenGLESTextureCacheRef coreVideoTextureCache;
     CVPixelBufferRef renderTarget;
     CVOpenGLESTextureRef renderTexture;
     CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, self.mainContext, NULL, &coreVideoTextureCache);
@@ -513,7 +555,7 @@ CVOpenGLESTextureCacheRef coreVideoTextureCache;
 }
 ```
 
-### > 根据 UIImage --> 生成图片纹理相关信息
+### <font color=#8E236B> > 根据 UIImage --> 生成图片纹理相关信息 </font>
 
 ```
 - (CVPixelBufferRef)pixelBufferRefFromCGImage:(CGImageRef)imgRef{
@@ -565,7 +607,7 @@ CVOpenGLESTextureCacheRef coreVideoTextureCache;
 ```
 
 
-### > 图片纹理相关信息 --> generate UIImage
+### <font color=#8E236B> > 图片纹理相关信息 --> generate UIImage </font>
 
 ```
 - (UIImage *)generateImageFromCVPixelBufferRef:(CVPixelBufferRef)pixelBufferRef{
@@ -748,6 +790,14 @@ glBindTexture(CVOpenGLESTextureGetTarget(_chromaTexture), CVOpenGLESTextureGetNa
 
 
 
+### OpenGL ES 可学习的教程地址： 
+
+```
+iOS -- OpenGL ES 的总体讲解： http://www.cocoachina.com/ios/20180906/24799.html --- 后面带有 教程链接
+简书OpenGL ES专题教程 --- 	 https://www.jianshu.com/nb/2135411
+Learn OpenGL ES 博客教程图形学 ---	 https://learnopengl-cn.github.io/
+简书 OpenGL ES分散教程 --- 	 https://github.com/loyinglin
+```
 
 
 
