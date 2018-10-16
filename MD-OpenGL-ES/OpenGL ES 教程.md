@@ -1,7 +1,7 @@
 # <center><font color=red> OpenGL ES 教程 </font></center>
 
 
-OpenGL ES 只是一个规范函数，需要使用专门的编程语言实现其所需要的图像绘制功能。
+OpenGL ES （Open Graphics Library） 只是一个规范函数，需要使用专门的编程语言实现其所需要的图像绘制功能。
 
 OpenGL自身是一个巨大的状态机(State Machine)：一系列的变量描述OpenGL此刻应当如何运行。 `OpenGL 的状态通常被称为 OpenGL 上下文(Context)`,通常是通过 `设置选项` `操作缓冲` 改变OpenGL 的状态最后使用当前OpenGL上下文实现渲染。
 
@@ -93,6 +93,19 @@ https://developer.apple.com/documentation/opengles?language=objc
 ```
 
 #### > 1. 新建OpenGL ES上下文
+
+经过大量了解基本可以知道使用 `OpenGL ES` 绘制图形的方法很多。我理解到是 `OpenGL ES`底层是 C语言实现的，则大多可以直接使用 C语言实现大部分的内容，即我们甚至可以直接使用C语言底层来进行 OpenGL ES的绘制。
+
+如在初始化环境时使用的 `CAEAGLLayer`类就是 OpenGL ES本身可以使用的绘制的类；但是我们iOS又为了避免 `OpenGL ES`开发的复杂性，又进行了封装操作 则可以说是 `GLKitView` 类的由来了，基本使用最后的效果都一样。
+
+#### `GLKitView` 绘制 -- 所进行的场景的渲染会在 `delegate` 代理中进行的。设置上下文属性 --- 最后所有的绘制都交给了 iOS封装的 `GLKitView` 来进行。 包括后期的 EAGLContext的context上下文设置。
+
+```
+GLKitView *glkV = [GLKitView alloc]init...;
+glkV.context = _mainContext (EAGLContext *mainContext);
+//  EAGLContext 上下文状态直接设置 为 GLKitView 的上下文状态
+```
+
 
 <font color=#8E236B> EAGLContext 的使用，首次被弃用出现在 `iOS12.0` 上 </font>
 
@@ -424,6 +437,20 @@ glBindVertexArray(VAO);
 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
 glBindVertexArray(0);
 ```
+
+
+<font color=#8E236B> OpenGL ES绘制步骤 </font>
+
+```
+用OpenGL ES画一个绘制从程序的角度需要以下几个步骤：
+	1. 写一个fragment Shader和vertex shader
+	2. 创建一个glProgram，链接两个shader。
+	3. 设置viewport
+	4. 设置framebuffer和renderbuffer用来显示三角形
+	5. 传递顶点坐标
+	6. 绘制
+```
+
 
 所有几何图元的绘制都是通过调用 `glDrawArrays` 实现的：
 
