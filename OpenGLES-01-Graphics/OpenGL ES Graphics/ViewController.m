@@ -20,11 +20,14 @@
 
 @interface ViewController () <GLKViewDelegate>
 
+
+/* Method One */
 @property (nonatomic,strong) EAGLContext *mainContext;
 
 @property (nonatomic , assign) int indicesCount;
 
 @property (nonatomic , strong) GLKBaseEffect* baseEffect;
+
 
 /* Method Two */
 @property (nonatomic,strong) CAEAGLLayer *eaglLayer;
@@ -47,11 +50,13 @@
 
 @implementation ViewController
 {
+    
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    // set background color is black color.
+    self.view.backgroundColor = [UIColor blackColor];
     
     
     [self createOpenGLContext];
@@ -66,21 +71,20 @@
     // 配置顶点着色器和片段着色器进行颜色设置
     // 此方法只是进行颜色的着色，如果不调用也并不会影响我们的程序和图形的正确创建和生成。
     [self compileShadersCreatProgram];
+    
     // 绘制`矩形`
-    [self createGraphics];
+    //[self createGraphics];
     
     // 绘制`点`
-    //[self createDrawPoints];
-    
-    
+     [self createDrawPoints];
+        
 }
-
 
 
 
 #pragma mark -  `GLKitView` --- set up OpenGL ES
 // step 1
-- (void)createOpenGLContext{
+- (void)createOpenGLContext {
     /* context */
     _mainContext = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
     //设置当前屏幕view显示上下文为初始化的 self.mainContext
@@ -96,7 +100,7 @@
     
 }
 // M1 - step 2 -- create GLKView
-- (void)createGLKView{
+- (void)createGLKView {
     
     GLKView *glkV = [[GLKView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
     [self.view addSubview:glkV];
@@ -142,16 +146,14 @@
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorRenderBuffer);
     [_mainContext renderbufferStorage:GL_RENDERBUFFER fromDrawable:_eaglLayer];
     
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &width);
-    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &height);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &_width);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &_height);
     //check success
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
         NSLog(@"Failed to make complete framebuffer object: %i", glCheckFramebufferStatus(GL_FRAMEBUFFER));
     }
     
 }
-
-
 
 
 
@@ -382,7 +384,7 @@
     
 }
 
-- (void)destoryBuffer{
+- (void)destoryBuffer {
     // 销毁渲染区和帧缓冲区
     if (_colorRenderBuffer) {
         glDeleteRenderbuffers(1, &_colorRenderBuffer);

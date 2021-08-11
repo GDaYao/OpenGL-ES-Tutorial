@@ -7,7 +7,36 @@ OpenGL自身是一个巨大的状态机(State Machine)：一系列的变量描�
 
 通过上述就可以知道了，我们实现OpenGL 去绘制时就是不断的改变OpenGL的状态实现的。
 
-### > OpenGL 基础类型
+
+
+### <font color=oo99ff>  OpenGL ES 、GPUImage 、CoreImage、OpenCV 等框架区分 </font>
+
+
+（图片来源于网络，仅供学习使用）
+
+![各图形框架图](各图形框架关系.png)
+
+各个框架大体介绍如下：
+
+1.  界面图形框架 -- UIKit
+2.  核心动画框架 -- Core Animation
+3.  苹果封装的图形框架 -- CoreGraphics  && Quartz 2D
+4.  传统跨平台图形框架 -- OpenGL ES
+5. 苹果最新力推的图形框架 -- Metal
+6. 适合图片的苹果滤镜框架 -- Core Image
+7. 适合视频的第三方滤镜方案 -- GPUImage
+8. 游戏引擎 -- Scene Kit（3D）  ++ Sprite Kit（2D）
+9. 计算机视觉在iOS的应用 -- OpenCV for iOS
+
+
+
+
+
+
+
+
+
+### <font color=oo99ff> OpenGL 基础类型 </font>
 
 对于OpenGL的基础类型，有点类似于 iOS-OC语言中的 Foundation框架中对于数组、字典、字符串等的描述。在本语言使用的类型中，加上自己需要使用的前缀作为本语言的基础语言。
 
