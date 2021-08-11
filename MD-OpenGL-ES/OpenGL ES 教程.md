@@ -12,7 +12,8 @@ OpenGL自身是一个巨大的状态机(State Machine)：一系列的变量描�
 ### <font color=oo99ff>  OpenGL ES 、GPUImage 、CoreImage、OpenCV 等框架区分 </font>
 
 
-（图片来源于网络，仅供学习使用）
+
+（图片来源于网络，仅供学习使用:https://juejin.cn/post/6844903645272604679）
 
 ![各图形框架图](各图形框架关系.png)
 
@@ -27,10 +28,6 @@ OpenGL自身是一个巨大的状态机(State Machine)：一系列的变量描�
 7. 适合视频的第三方滤镜方案 -- GPUImage
 8. 游戏引擎 -- Scene Kit（3D）  ++ Sprite Kit（2D）
 9. 计算机视觉在iOS的应用 -- OpenCV for iOS
-
-
-
-
 
 
 
